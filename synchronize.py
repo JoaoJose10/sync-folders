@@ -44,14 +44,16 @@ def sync_folders(source_folder_path, replica_folder_path, log_file):
         if file not in files_names_replica:
                 
             if os.path.exists(file_path):
-                if os.path.isdir(file_path):  # If it's a folder
+                # If it's a folder
+                if os.path.isdir(file_path):  
                     shutil.copytree(file_path, new_file_path)
                     
                     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     log_file.write(f"[{timestamp}] {file} and its contents were created in path {replica_folder_path}\n\n")
                     print(f"[{timestamp}] {file} and its contents were created in path {replica_folder_path}")
                 
-                else:  # If it's a file
+                # If it's a file
+                else:  
                     shutil.copy2(file_path, new_file_path)
                     
                     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -67,7 +69,8 @@ def sync_folders(source_folder_path, replica_folder_path, log_file):
                 
                 if hash_source != hash_replica:
                     sync_folders(file_path, new_file_path, log_file)
-
+            
+            # If it's a file
             else:
                 size_source = os.path.getsize(file_path)
                 size_replica = os.path.getsize(new_file_path)
@@ -101,13 +104,16 @@ def sync_folders(source_folder_path, replica_folder_path, log_file):
         file_erase_path = os.path.join(replica_folder_path, file_erase)
         
         if os.path.exists(file_erase_path):
-
+            
+            # If it's a folder
             if os.path.isdir(file_erase_path):
                 shutil.rmtree(file_erase_path)
 
                 timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 print(f"[{timestamp}] {file_erase} and its content were removed from path {replica_folder_path}")
                 log_file.write(f"[{timestamp}] {file_erase} and its content were removed from path {replica_folder_path}\n\n")  
+            
+            # If it's a file
             else:
                 os.remove(file_erase_path)
 
